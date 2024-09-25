@@ -3,26 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API 调用示例</title>
+    <title>邮件发送页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input {
+            margin: 5px;
+            padding: 8px;
+            width: 300px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>API 调用结果</h1>
-    <pre id="result"></pre>
-    <script>
-        const params = {
-            "page_id": "ihOYMW2xbrNYtid",
-            "mail_receivers": ["chengtianjiao@douban.com"]
-        };
-        const url = `http://anduril.dapps.douban.com/api/anduril/doumail_neon?params=${encodeURIComponent(JSON.stringify(params))}`;
+    <h1>邮件发送页面</h1>
+    <label for="page_id">Page ID:</label>
+    <input type="text" id="page_id" placeholder="请输入 Page ID" required>
+    <br>
+    <label for="mail_receivers">Mail Receivers (以逗号分隔):</label>
+    <input type="text" id="mail_receivers" placeholder="请输入接收者邮箱" required>
+    <br>
+    <button onclick="sendMail()">确认</button>
 
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('result').textContent = JSON.stringify(data, null, 2);
-            })
-            .catch(error => {
-                document.getElementById('result').textContent = '请求失败: ' + error;
-            });
+    <script>
+        function sendMail() {
+            const pageId = document.getElementById('page_id').value;
+            const mailReceivers = document.getElementById('mail_receivers').value.split(',');
+
+            const params = {
+                page_id: pageId,
+                mail_receivers: mailReceivers.map(email => email.trim())
+            };
+
+            const apiUrl = 'http://anduril.dapps.douban.com/api/anduril/doumail_neon?params=' + encodeURIComponent(JSON.stringify(params));
+
+            // 发送请求（这里仅为示例，实际请求需要处理CORS）
+            console.log('发送请求到:', apiUrl);
+            // 你可以使用 fetch 或 axios 发送请求
+            // fetch(apiUrl)
+            //    .then(response => response.json())
+            //    .then(data => console.log(data))
+            //    .catch(error => console.error('错误:', error));
+        }
     </script>
 </body>
 </html>
